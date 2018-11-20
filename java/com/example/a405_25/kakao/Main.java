@@ -11,6 +11,8 @@ import android.view.View;
 
 import java.util.List;
 
+import static android.provider.Telephony.Mms.Part.TEXT;
+
 public class Main extends AppCompatActivity {
 
     @Override
@@ -24,6 +26,11 @@ public class Main extends AppCompatActivity {
         findViewById(R.id.moveLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SqliteHelper helper = new SqliteHelper(ctx);
+                //Helper라는 객체를 만드는 것은 곧, SQLite DB를 만드는 것!
+
+
                 /*
                 Intent intent = new Intent(ctx,Login.class);        //java=>compile=>class
                                         //frome     to 즉,현재페이지에서...
@@ -33,8 +40,6 @@ public class Main extends AppCompatActivity {
 
             }
         });
-
-
         }
     static interface ExcuteService {
         public void perfome();
@@ -51,6 +56,7 @@ public class Main extends AppCompatActivity {
 
     static abstract class QueryFactory{     //query생성clas
         Context ctx;
+
         public QueryFactory(Context ctx) {      //alt+insert
             this.ctx = ctx;
         }
@@ -62,10 +68,7 @@ public class Main extends AppCompatActivity {
     static class SqliteHelper extends SQLiteOpenHelper{     //sqlitedb열어줌
             //alt+insert > implement +
 
-        @Override
-        public SqliteHelper(Context context, String name,
-                            SQLiteDatabase.CursorFactory factory,
-                            int version) {
+        public SqliteHelper(Context context) {
             super(context, DBInfo.DBNAME, null,1);  //커스터마이즈
             this.getWritableDatabase();         //data insert
         }
@@ -78,10 +81,9 @@ public class Main extends AppCompatActivity {
               "   %s TEXT, "+
               "   %s TEXT, "+
               "   %s TEXT, "+
-              "   %s TEXT, "+
-              "   %s TEXT, "+
+              "   %s TEXT, " +
+              "   %s TEXT " +
               ") ",
-
 
                     DBInfo.MBR_TABLE,
                     DBInfo.MBR_SEQ,
@@ -98,7 +100,6 @@ public class Main extends AppCompatActivity {
 
             Log.d("===========================================","쿼리실행");
 
-
             String[] names = {"강동원","윤아","임수정","박보검","이효리"};
             String[] emails = {"aaa@naber.com","bbb@naber.com","ccc@gmail.com","ddd@daum.net","eeee@yahoo.com"};
             String[] addr = {"강동구","관악구","송파구","강서구","강남구"};
@@ -106,7 +107,8 @@ public class Main extends AppCompatActivity {
 
             for(int i=0;i<names.length;i++){
                 Log.d("입력하는 이름 ::" ,names[i]);
-                db.execSQL(String.format(
+
+                db.execSQL(String.format(                   //writable   vs readable ?
                         " INSERT INTO %s  " +
                         " ( %s ," +
                         "  %s ," +
@@ -115,32 +117,27 @@ public class Main extends AppCompatActivity {
                         "  %s ," +
                         "  %s " +
                         ")VALUES("+
+                        "'%s', " +
+                        "'%s' ," +
+                        "'%s' ," +
+                        "'%s' ," +
+                        "'%s' ," +
                         "'%s' " +
-                        "  %s ," +
-                        "  %s ," +
-                        "  %s ," +
-                        "  %s ," +
-                        "  %s " +
                         " ) " ,
-                        DBInfo.MBR_TABLE, DBInfo.MBR_SEQ, DBInfo.MBR_NAME, DBInfo.MBR_EMAIL, DBInfo.MBR_PASS,
+                        DBInfo.MBR_TABLE, DBInfo.MBR_NAME, DBInfo.MBR_EMAIL, DBInfo.MBR_PASS,
                         DBInfo.MBR_ADDR, DBInfo.MBR_PHONE, DBInfo.MBR_PHOTO,
-                        names[i],emails[i],'1',addr[i],"010-1234-567"+i,"PHOTO_"+(i+1);
-
-                        Log.d("*************************","친구등록완료!");
-
-
+                        names[i],emails[i],'1',addr[i],"010-1234-567"+i,"PHOTO_"+(i+1)
                 ));
+                Log.d("*************************","친구등록완료!");
             }
-
-
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS "+DBInfo.MBR_TABLE);
+            onCreate(db);
+
 
         }
     }
-
-
-
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 
 public class mbr_list extends AppCompatActivity {
 
@@ -14,11 +15,13 @@ public class mbr_list extends AppCompatActivity {
         setContentView(R.layout.mbr_list);
 
         final Context ctx = mbr_list.this;
-        findViewById(R.id.btnDetail).setOnClickListener(new View.OnClickListener() {
+        ListView mbr_list = findViewById(R.id.mbr_list);
+
+        findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(ctx,mbr_detail));
+                startActivity(new Intent(ctx,mbr_detail.class));
             }
         });
 
