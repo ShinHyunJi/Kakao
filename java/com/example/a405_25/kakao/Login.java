@@ -29,30 +29,29 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //Validation 유효성 체크
-                if(etID.getText().length() !=0 && etPass.getText().length()!=0 ){
+                // Validation 유효성체크
+                if(etID.getText().length()!=0 && etPass.getText().length()!=0){
                     String id = etID.getText().toString();
-                    String pass =etPass.getText().toString();
-                    //객체생성
-                    final LoginQuery.ItemExist query = new LoginQuery.ItemExist();
-
-                        query.id = id;
-                        query.pw = pass;
-                        new Main.ExcuteService(){
-                            public void perfome(){
-                                if(query.execute()){
-                                    startActivity(new Intent(ctx,mbr_list.class));
-                                }else{
-                                    startActivity(new Intent(ctx,Login.class));
-                                }
+                    String pass = etPass.getText().toString();
+                    final ItemExist query = new ItemExist(ctx);
+                    query.id = id;
+                    query.pw = pass;
+                    new Main.ExcuteService() {
+                        @Override
+                        public void perfome() {
+                            if(query.execute()){
+                                startActivity(new Intent(ctx, mbr_list.class));
+                            }else{
+                                startActivity(new Intent(ctx, Login.class));
                             }
-                        }.perfome();
-                    }else{
-
+                        }
+                    }.perfome();
+                }else{
+                    startActivity(new Intent(ctx, Login.class));
                 }
+
             }
         });
-
         //Button  => btCancel
         findViewById(R.id.btCancel).setOnClickListener(new View.OnClickListener() {
 
@@ -61,45 +60,34 @@ public class Login extends AppCompatActivity {
         });
     }           //onCreate END
 
-    private class LoginQuery extends Main.QueryFactory {
-
+    private class LoginQuery extends Main.QueryFactory{
         SQLiteOpenHelper helper;
-
         public LoginQuery(Context ctx) {
             super(ctx);
-            helper = new Main.SqliteHelper(ctx);
-
+            helper = new Main.SQLiteHelper(ctx);
         }
-
         public SQLiteDatabase getDateabase() {
             return helper.getReadableDatabase();
 
-        }   //LoginQuery END
+        }
+    } // LoginQuery End
 
+    private class ItemExist extends LoginQuery{
+        String id, pw;
 
-        private class ItemExist extends LoginQuery {
-
-            String id, pw;
-
-            public ItemExist(Context ctx) {
-                super(ctx);     //LoginQuery
-            }
-
-            public boolean execute() {
-                String s = String.format(" SELECT * FROM %s " +
-                                " WHERE %s LIKE '%s' AND %s LIKE '%s'",
-                        DBInfo.MBR_TABLE, DBInfo.MBR_SEQ, id,
-                        DBInfo.MBR_PASS, pw);
-
-                return super
-                        .getDateabase()     //readable db
-                        .rawQuery(s, null)
-                        .moveToNext()
-                        ;
-            }
-
+        public ItemExist(Context ctx) {
+            super(ctx);
+        }
+        public boolean execute(){
+            return super
+                    .getDateabase()
+                    .rawQuery(String.format(
+                            " SELECT * FROM %s "+
+                                    " WHERE %s LIKE '%s' AND %s LIKE '%s'",
+                            DBInfo.MBR_TABLE,DBInfo.MBR_SEQ, id,
+                            DBInfo.MBR_PASS, pw),null)
+                    .moveToNext()
+                    ;
         }
     }
 }
-
-

@@ -27,7 +27,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                SqliteHelper helper = new SqliteHelper(ctx);
+                Log.d(" -- 1 --","진입");
+                SQLiteHelper helper = new  SQLiteHelper(ctx);
                 //Helper라는 객체를 만드는 것은 곧, SQLite DB를 만드는 것!
 
 
@@ -46,11 +47,11 @@ public class Main extends AppCompatActivity {
 
     }
 
-    static interface ListService{
+    static interface ListService{               //mbr_list
         public List<?> perfome();
     }
 
-    static interface ObjectService{
+    static interface ObjectService{             //mbr_detail
         public Object perfome();
     }
 
@@ -65,15 +66,19 @@ public class Main extends AppCompatActivity {
 
     }
 
-    static class SqliteHelper extends SQLiteOpenHelper{     //sqlitedb열어줌
+    static class SQLiteHelper extends SQLiteOpenHelper{
+        //sqlitedb열어줌
             //alt+insert > implement +
 
-        public SqliteHelper(Context context) {
+        public SQLiteHelper(Context context) {
             super(context, DBInfo.DBNAME, null,1);  //커스터마이즈
             this.getWritableDatabase();         //data insert
+            Log.d(" -- 2 --","SQLiteHelper 생성자 내부");
         }
 
         public void onCreate(SQLiteDatabase db){
+
+            Log.d(" -- 3 --","onCreate 내부");
             String sql = String.format(
               " CREATE TABLE IF NOT EXISTS %s " +
               " ( %s INTEGER PRIMARY KEY AUTOINCREMENT," +   //자동1씩 증가
@@ -95,7 +100,7 @@ public class Main extends AppCompatActivity {
                     DBInfo.MBR_PHOTO
             );
 
-            Log.d("실행할 쿼리 ::",sql);
+            Log.d("--4--실행할 쿼리 :: " , sql);
             db.execSQL(sql);
 
             Log.d("===========================================","쿼리실행");
@@ -128,16 +133,14 @@ public class Main extends AppCompatActivity {
                         DBInfo.MBR_ADDR, DBInfo.MBR_PHONE, DBInfo.MBR_PHOTO,
                         names[i],emails[i],'1',addr[i],"010-1234-567"+i,"PHOTO_"+(i+1)
                 ));
-                Log.d("*************************","친구등록완료!");
             }
+            Log.d("******* 7 ********","친구등록완료");
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS "+DBInfo.MBR_TABLE);
+        public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+            db.execSQL("DROP TABLE IF EXISTS " + DBInfo.MBR_TABLE);
             onCreate(db);
-
-
         }
     }
 }

@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/profile"
+        android:id="@+id/photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:paddingRight="10dp"/>
@@ -16,7 +16,7 @@
         android:paddingRight="10dp"
         android:textSize="15dp"
         android:textStyle="bold"
-        android:layout_toRightOf="@+id/profile"
+        android:layout_toRightOf="@+id/photo"
         />
 
     <TextView
