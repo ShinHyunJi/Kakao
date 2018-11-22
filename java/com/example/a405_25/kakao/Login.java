@@ -23,7 +23,6 @@ public class Login extends AppCompatActivity {
         final EditText etID = findViewById(R.id.etID);
         final EditText etPass = findViewById(R.id.etPass);
 
-
         //Button => btLogin
         findViewById(R.id.btLogin).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +51,7 @@ public class Login extends AppCompatActivity {
 
             }
         });
+
         //Button  => btCancel
         findViewById(R.id.btCancel).setOnClickListener(new View.OnClickListener() {
 
