@@ -10,9 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Login" />
-        <activity android:name=".Main">
-        </activity>
-        <activity android:name=".mbr_list" >
+        <activity android:name=".Main"></activity>
+        <activity android:name=".mbr_list">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".mbr_detail" />
-        <activity android:name=".mbr_update"></activity>
+        <activity android:name=".mbr_update" />
+        <activity android:name=".mbr_add"></activity>
     </application>
 
 </manifest>

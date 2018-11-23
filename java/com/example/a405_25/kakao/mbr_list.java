@@ -1,10 +1,12 @@
 package com.example.a405_25.kakao;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,14 +77,55 @@ public class mbr_list extends AppCompatActivity {
             }
         });
 
-        //삭제처리
+        //삭제처리          오른쪽 길게 눌렀을 때
+         mbr_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+             @Override
+             public boolean onItemLongClick(AdapterView<?> p, View v, int i, long l) {
+                 Member m = (Member)mbr_list.getItemAtPosition(i);
+                 new AlertDialog.Builder(ctx)
+                         .setTitle("삭 제 ")
+                         .setMessage("정말 삭제하시겠어요?")
+                         .setPositiveButton(
+                                 android.R.string.yes,
+                                 new DialogInterface.OnClickListener() {
+                                     @Override
+                                     public void onClick(DialogInterface dialog, int which) {
+
+                                         //삭제 쿼리 실행    ==> drop query 만들기
+                                         Toast.makeText(ctx,"삭제완료",Toast.LENGTH_LONG).show();
+                                         startActivity(new Intent(ctx,mbr_list.class));            //삭제 후 다시 list로@
+                                     }
+                                 }
+
+                         )
+                         .setNegativeButton(
+                                 android.R.string.no,
+                                 new DialogInterface.OnClickListener() {
+                                     @Override
+                                     public void onClick(DialogInterface dialog, int which) {
+                                         Toast.makeText(ctx,"삭제 취소",Toast.LENGTH_LONG).show();
+                                     }
+                                 }
+                         ).show();                  //alert도 show()              ; 줄이기..
+
+                 return true;
+             }
+
+        });
 
 
 
+        //친구추가 버튼>?
+        findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ctx,mbr_add.class));
+            }
+        });
 
 
     }   // onCreate End지점!
-
 
 
 
@@ -95,12 +139,13 @@ public class mbr_list extends AppCompatActivity {
         }
 
         public SQLiteDatabase getDateabase(){           //db가져오기
-
             return helper.getReadableDatabase();
         }
     }
 
     private class ItemList extends ListQuery{
+
+
         public ItemList(Context ctx) {      //부모에게서 위치값 받아서 넣기
 
             super(ctx);
@@ -163,13 +208,11 @@ public class mbr_list extends AppCompatActivity {
 
             return ls.size();
         }
-
         @Override
         public Object getItem(int i) {
 
             return ls.get(i);
         }
-
         @Override
         public long getItemId(int i) {
 
@@ -203,7 +246,7 @@ public class mbr_list extends AppCompatActivity {
 
             query.seq = ls.get(i).seq+"";
 
-            String s = ((String)new Main.ObjectService() {   //s =file name
+            String s = ((String)new Main.ObjectService() {          //s =file name
                 @Override
                 public Object perfome() {
                     return query.execute();
@@ -211,10 +254,10 @@ public class mbr_list extends AppCompatActivity {
             }.perfome()).toLowerCase();                 //table에는 PHOTO로 되어있어서
             Log.d("파일명:",s);
 
-            //쓸데없이 외우지 말것.. 구조이해가 먼저!
+            //구조이해가 먼저!
             holder.photo
                     .setImageDrawable(getResources().getDrawable(           //사진은 drawable안에 file명만 있으니까
-                            getResources().getIdentifier(//parame 3개
+                            getResources().getIdentifier(           //parame 3개
                                     ctx.getPackageName()+":drawable/"+s,null,null),
                             ctx.getTheme() ));
 
@@ -265,26 +308,7 @@ public class mbr_list extends AppCompatActivity {
             }
             return result;
         }
-
-
-
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

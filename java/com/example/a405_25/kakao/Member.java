@@ -2,7 +2,7 @@ package com.example.a405_25.kakao;
 
 public class Member {
     int seq;
-    String name, pass,email,phone,addr,photo;
+    String name, pass, email, phone, addr, photo;
 
     public int getSeq() {
         return seq;
@@ -73,7 +73,4 @@ public class Member {
                 '}';
     }
 }
-
-
-
 
