@@ -32,8 +32,6 @@ public class mbr_list extends AppCompatActivity {
 
         final Context ctx = mbr_list.this;
         final ListView mbr_list = findViewById(R.id.btnList);
-
-
         final ItemList query = new ItemList(ctx);
 
         //Main.ListService s = new Main.ListService() {
@@ -53,7 +51,7 @@ public class mbr_list extends AppCompatActivity {
 
         //mbr_list.setAdapter(new MemberAdapter(ctx,s));
 
-         mbr_list.setAdapter(new MemberAdapter(ctx, mlist));
+         mbr_list.setAdapter(new MemberAdapter(ctx, mlist));//area안 파라미터값으로
 
         //친구추가 버튼
         findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
@@ -272,40 +270,40 @@ public class mbr_list extends AppCompatActivity {
     }
 
     private class PhotoQuery extends Main.QueryFactory{     //Photo 불러오는게 db가 아니라
-                                                                //select photo from id like sequence
+                //select photo from id like sequence
 
-        Main.SQLiteHelper helper;
+                Main.SQLiteHelper helper;
 
-        public PhotoQuery(Context ctx) {
-            super(ctx);
-            helper =new Main. SQLiteHelper(ctx);
-        }
+                public PhotoQuery(Context ctx) {
+                    super(ctx);
+                    helper =new Main. SQLiteHelper(ctx);
+                }
 
-        @Override
-        public SQLiteDatabase getDateabase() {
-            return helper.getReadableDatabase();
-        }
-    }
-    private class ItemPhoto extends PhotoQuery{
-        String seq;
-        public ItemPhoto(Context ctx) {
-            super(ctx);
-        }
-        public String execute(){
-            Cursor c= getDateabase()
-                    .rawQuery(String.format(
-                            " SELECT %s FROM %s WHERE %s LIKE '%s' ",
-                            DBInfo.MBR_PHOTO,
-                            DBInfo.MBR_TABLE,
-                            DBInfo.MBR_SEQ,
-                            seq
-                    ),null);
-            String result = "";
-            if(c!= null){
-                if(c.moveToNext()){
-                    result = c.getString(c.getColumnIndex(DBInfo.MBR_PHOTO));
+                @Override
+                public SQLiteDatabase getDateabase() {
+                    return helper.getReadableDatabase();
                 }
             }
+            private class ItemPhoto extends PhotoQuery{
+                String seq;
+                public ItemPhoto(Context ctx) {
+                    super(ctx);
+                }
+                public String execute(){
+                    Cursor c= getDateabase()
+                            .rawQuery(String.format(
+                                    " SELECT %s FROM %s WHERE %s LIKE '%s' ",
+                                    DBInfo.MBR_PHOTO,
+                                    DBInfo.MBR_TABLE,
+                                    DBInfo.MBR_SEQ,
+                                    seq
+                            ),null);
+                    String result = "";
+                    if(c!= null){
+                        if(c.moveToNext()){
+                            result = c.getString(c.getColumnIndex(DBInfo.MBR_PHOTO));
+                        }
+                    }
             return result;
         }
     }

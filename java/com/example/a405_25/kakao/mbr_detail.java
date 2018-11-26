@@ -15,6 +15,10 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.a405_25.kakao.util.Album;
+import com.example.a405_25.kakao.util.Phone;
 
 import org.w3c.dom.Text;
 
@@ -36,7 +40,7 @@ public class mbr_detail extends AppCompatActivity {
         final ItemDetail query = new ItemDetail(ctx);      //new intent가 아닌, 보낸 정보 그대로 현위치에
         query.seq = seq;
 
-        Member m = (Member) new Main.ObjectService() {
+        final Member m = (Member) new Main.ObjectService() {
             @Override
             public Object perfome() {
                 return query.execute();
@@ -48,6 +52,8 @@ public class mbr_detail extends AppCompatActivity {
 
         final String spec = m.seq + "/" + m.addr + "/" + m.email + "/" + m.name + "/" + m.pass + "/" + m.photo + "/" + m.phone;
 
+
+
         //updateBtn
         findViewById(R.id.updateBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +61,142 @@ public class mbr_detail extends AppCompatActivity {
                 Intent intent = new Intent(ctx, mbr_update.class);
                 intent.putExtra("spec", spec);
                 startActivity(intent);
+
+            }
+
+        });
+
+
+
+        final ImageView profile = findViewById(R.id.profile);
+
+        final String[] arr = {"photo_1","photo_2","photo_3","photo_4","photo_5"};
+
+        //Image View
+        //Log.d("프로필사진 :: ",arr[5].toLowerCase());
+        profile.setImageDrawable(
+                getResources()
+                        .getDrawable(
+                                getResources()
+                                        .getIdentifier(this.getPackageName()+":drawable/"+arr[5].toLowerCase(),null,null), ctx.getTheme()
+                        )
+        );
+
+
+
+
+
+
+        findViewById(R.id.name).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.email).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.phone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.callBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Phone phone = new Phone(ctx,mbr_detail.this);
+                phone.setPhoneNum(m.phone);
+                phone.directCall();
+            }
+        });
+
+
+        findViewById(R.id. addr).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.dialBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Phone phone = new Phone(ctx,mbr_detail.this);
+                phone.setPhoneNum(m.phone);
+                phone.dial();
+
+            }
+        });
+
+        findViewById(R.id.smsBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.emailBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //email.sendEmail("hjshin612@naver.com");
+
+            }
+        });
+
+        findViewById(R.id.albumBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ctx,Album.class));
+
+            }
+        });
+
+
+        findViewById(R.id.movieBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+        findViewById(R.id.mapBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+        findViewById(R.id.musicBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.listBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }       //onCreate End
+
+
+
+
+
+
+
 
     //DB영역
     private class DetailQuery extends Main.QueryFactory {
@@ -111,8 +250,5 @@ public class mbr_detail extends AppCompatActivity {
 
         }
     }
-
-
-
 
 }

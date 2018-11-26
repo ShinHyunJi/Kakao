@@ -46,7 +46,4 @@ public class mbr_add extends AppCompatActivity {
 
 
 
-
-
-
 }

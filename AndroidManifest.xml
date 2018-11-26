@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a405_25.kakao">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- Phone Call -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Login" />
-        <activity android:name=".Main"></activity>
+        <activity android:name=".Main" />
         <activity android:name=".mbr_list">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +23,8 @@
         </activity>
         <activity android:name=".mbr_detail" />
         <activity android:name=".mbr_update" />
-        <activity android:name=".mbr_add"></activity>
+        <activity android:name=".mbr_add" />
+        <activity android:name=".util.Album"></activity>
     </application>
 
 </manifest>

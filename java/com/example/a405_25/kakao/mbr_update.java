@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class mbr_update extends AppCompatActivity {
 
@@ -84,11 +85,11 @@ public class mbr_update extends AppCompatActivity {
                 // query.member = member;
 
                 member.setName((name.getText().equals(""))? arr[3]:name.getText().toString());
+                member.setEmail((email.getText().equals(""))? arr[2]:email.getText().toString());
+                member.setPhone((phone.getText().equals("")?arr[6]:phone.getText().toString()));
+                member.setAddr((addr.getText().equals("")?arr[1]:phone.getText().toString()));
+                member.setPass((pass.getText().equals("")?arr[4]:pass.getText().toString()));
                 query.member = member;
-
-                //email
-                //name... 다 만들것!!
-
 
 
                 //반환값이 void니까 삭제
@@ -99,6 +100,7 @@ public class mbr_update extends AppCompatActivity {
                         query.execute();
                     }
                 }.perfome();
+
 
 
             }
@@ -132,7 +134,6 @@ public class mbr_update extends AppCompatActivity {
     private class ItemUpdate extends UpdateQuery{
         Member member;                  //Memory에 저장!
                                         // Member member = new Member();     안돼!
-
         public ItemUpdate(Context ctx) {
             super(ctx);
             member = new Member();
@@ -140,13 +141,13 @@ public class mbr_update extends AppCompatActivity {
             //로직은 반드시 에어리어 내부에서 이루어 짐
             // 에어리어 내부는 CPU를 뜻함
             //필드는 RAM 영역을 뜻함
-
         }
+
         public void execute(){
             String sql = String.format(
                     " UPDATE %s SET "+
                             " %s = '%s' ," +
-                            " %s = '%s' ,"+
+                            " %s = '%s' ," +
                             " %s = '%s' ," +
                             " %s = '%s' ," +
                             " %s = '%s' ," +
@@ -162,8 +163,6 @@ public class mbr_update extends AppCompatActivity {
                     DBInfo.MBR_PHONE, member.phone,
                     DBInfo.MBR_SEQ, member.seq
 
-
-                    // m.seq+"/"+m.addr+"/"+m.email+"/"+m.name+"/"+m.pass+"/"+m.photo+"/"+m.phone
             );
             Log.d(" SQL :::", sql);
             getDateabase().execSQL(sql);
